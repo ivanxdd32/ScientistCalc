@@ -29,6 +29,15 @@ body {
     width: 35px;
     height: 5px;
     border-radius: 2px;
+    transition: 0.3s ease;
+}
+
+#menu.active #barra1 {
+  transform: translateY(5.5px) rotate(28deg);
+}
+
+#menu.active #barra2 {
+  transform: translateY(-5.5px) rotate(-28deg);
 }
 
 #contentOrder {

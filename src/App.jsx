@@ -1,13 +1,20 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import './App.css'
 import * as Tone from "tone";
 
 function App() {
-  
+  const menuRef = useRef(null);
+
+  function toggleMenu() {
+    if (menuRef.current) {
+      menuRef.current.classList.toggle('active');
+    }
+  }
+
   return (
     <>
       <div id='navBar'>
-        <div id='menu'>
+        <div id='menu' ref={menuRef} onClick={toggleMenu}>
           <div id='barra1'></div>
           <div id='barra2'></div>
           <div id='barra3'></div>
