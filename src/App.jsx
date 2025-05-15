@@ -6,10 +6,17 @@ function App() {
   
   return (
     <>
+      <div id='navBar'>
+        <div id='menu'>
+          <div id='barra1'></div>
+          <div id='barra2'></div>
+          <div id='barra3'></div>
+        </div>
+      </div>
       <div id='contentOrder'>
         <div>
           <h1>Calculator</h1>
-          <p id='subtitle'>Sencilla por fuera, poderosa por dentro.</p>
+          <p id='subtitle'>Simple on the outside, powerful on the inside.</p>
         </div>
         <div id='mesa'>
           <div class="calculadora-display">
@@ -20,7 +27,7 @@ function App() {
             <button>C</button>
             <button>()</button>
             <button>%</button>
-            <button>←</button>
+            <button>+</button>
 
             <button class="func">sin</button>
             <button>7</button>
@@ -44,7 +51,7 @@ function App() {
 
             <button class="func-orange">√</button>
             <button class="func-orange">x</button>
-            <button>+</button>
+            <button></button>
           </div>
         </div>
       </div>
