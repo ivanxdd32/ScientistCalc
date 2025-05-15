@@ -4,10 +4,12 @@ import * as Tone from "tone";
 
 function App() {
   const menuRef = useRef(null);
+  const desplegadoRef = useRef(null);
 
   function toggleMenu() {
     if (menuRef.current) {
       menuRef.current.classList.toggle('active');
+      desplegadoRef.current.classList.toggle('visible');
     }
   }
 
@@ -18,6 +20,12 @@ function App() {
           <div id='barra1'></div>
           <div id='barra2'></div>
           <div id='barra3'></div>
+        </div>
+        <div id='menuDesplegado' ref={desplegadoRef}>
+          <ol id='menuOpciones'>
+            <li>Language</li>
+            <li>Scientist Mode</li>
+          </ol>
         </div>
       </div>
       <div id='contentOrder'>

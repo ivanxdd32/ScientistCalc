@@ -40,6 +40,52 @@ body {
   transform: translateY(-5.5px) rotate(-28deg);
 }
 
+#menuDesplegado {
+    display: none;
+    background-color: #2a2a45;
+    width: 200px;
+    position: fixed;
+    top: 48px;
+    right: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    padding: 16px;
+    z-index: 10;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateY(-10px);
+    opacity: 0;
+}
+
+#menuDesplegado.visible {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+#menuOpciones {
+    color: #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#menuOpciones li {
+    width: 100%;
+    padding: 10px 1px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 16px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+#menuOpciones li:hover {
+    background-color: #3b3b5c;
+}
+
 #contentOrder {
     display: flex;
     justify-content: space-around;
