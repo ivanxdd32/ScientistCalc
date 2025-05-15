@@ -1,14 +1,122 @@
+body {
+    background-color: #181826;
+}
 
+#contentOrder {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 100px;
+}
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+h1 {
+    font-size: 2.25rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #E76D57;
+}
+
+#subtitle {
+    font-size: 1.5rem;
+    font-family: 'Manrope', sans-serif;
+    font-weight: bold;
+    color: #F8F3EB;
+}
+
+.calculadora-display {
+    background-color: #1f1f1f;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 10px;
+    width: 90%;
+    box-sizing: border-box;
+    gap: 0.5rem;
+    color: white;
+    font-family: sans-serif;
+    box-shadow: inset 0 0 4px 1px rgb(0, 0, 0);
+}
+
+.expresion {
+    color: #cbd5e1;
+    font-size: 1.125rem;
+    text-align: left;
+}
+
+.resultado {
+    color: white;
+    font-size: 1.875rem;
+    font-weight: bold;
+    text-align: right;
+    margin-right: 10px;
+}
+
+#mesa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    height: 28rem;
+    width: 17rem;
+    padding: 0 0 21px 0;
+    background-color: #292e2f;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 14px 4px rgb(0, 0, 0);
+}
+
+#grid-botones {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+}
+
+button {
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    border: #1f1f1f solid 2px;
+    border-radius: 0.5rem;
+    background-color: #212121;
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 500;
+    box-shadow: 0 0 5px 1px rgb(0, 0, 0);
+    transition: transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #1f1f1f;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.func {
+    background-color: #2E5E5F;
+    border: #2E5E5F solid 4px;
+}
+
+.func:hover {
+    background-color: #1A4B4B;
+    border: #1A4B4B solid 4px;
+}
+
+.func-orange {
+    background-color: #c75b1e;
+    border: #bb571f solid 4px;
+}
+
+.func-orange:hover {
+    background-color: #bb571f;
+}
+
+.igual {
+    background-color: #2563eb;
+    border: #255bd0 solid 4px;
+    grid-row: span 2;
+    height: 100%;
+}
+
+.igual:hover {
+    background-color: #255bd0;
 }
