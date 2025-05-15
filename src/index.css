@@ -152,3 +152,14 @@ button:active {
 .igual:hover {
     background-color: #255bd0;
 }
+
+@media (max-width: 980px) {
+  #contentOrder {
+    flex-direction: column;
+  }
+
+  #mesa {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
