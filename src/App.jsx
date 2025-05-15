@@ -1,8 +1,9 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import * as Tone from "tone";
 
 function App() {
+  const [darkMode, setDarkMode] = useState(true);
   const menuRef = useRef(null);
   const desplegadoRef = useRef(null);
 
@@ -13,9 +14,39 @@ function App() {
     }
   }
 
+  function toggleTheme(){
+    setDarkMode(prev => !prev);
+  }
+
+  useEffect(() => {
+    const body = document.body;
+
+    if (darkMode) {
+      body.classList.add('dark');
+      body.classList.remove('light');
+    } else {
+      body.classList.add('light');
+      body.classList.remove('dark');
+    }
+  }, [darkMode]);
+
   return (
     <>
       <div id='navBar'>
+        <div className='toggle-wrapper'>
+          <input
+            type='checkbox'
+            id='toggleDarkMode'
+            className='toggle-checkbox'
+            checked={darkMode}
+            onChange={toggleTheme}
+          />
+          <label htmlFor='toggleDarkMode' className='toggle-label'>
+            <span className='toggle-icon'>🌞</span>
+            <span className='toggle-ball'></span>
+            <span className='toggle-icon'>🌙</span>
+          </label>
+        </div>
         <div id='menu' ref={menuRef} onClick={toggleMenu}>
           <div id='barra1'></div>
           <div id='barra2'></div>
