@@ -35,6 +35,71 @@ function App() {
     setShowLangMenu(prev => !prev);
   }
 
+  //Logica de las operaciones matematicas (calculadora).
+  
+  const [expression, setExpression] = useState('0');
+  const [result, setResult] = useState('0');
+  const [hasResult, setHasResult] = useState(false);
+  const displayRef = useRef(null);
+
+  useEffect(() => {
+    if (displayRef.current) {
+      displayRef.current.scrollLeft = displayRef.current.scrollWidth;
+    }
+  }, [expression, result]);
+
+  const handleInput = (value) => {
+    if (hasResult) {
+      setResult((prev) => (prev === '0' ? value : prev + value));
+    } else {
+      setExpression((prev) => (prev === '0' ? value : prev + value));
+    }
+  };
+
+  const calculateResult = () => {
+    try {
+      let expressionToEvaluate = '';
+
+      if (hasResult) {
+        // Si se escribió sobre el resultado, evaluamos lo que hay en result
+        expressionToEvaluate = result;
+      } else {
+        // Caso normal: evaluamos la expresión
+        expressionToEvaluate = expression;
+      }
+
+      const sanitized = expressionToEvaluate
+        .replace(/×/g, '*')
+        .replace(/÷/g, '/')
+        .replace(/√/g, 'Math.sqrt')
+        .replace(/sin/g, 'Math.sin')
+        .replace(/cos/g, 'Math.cos')
+        .replace(/tan/g, 'Math.tan')
+        .replace(/log/g, 'Math.log10');
+
+      const evalResult = eval(sanitized);
+      const finalResult =
+        String(evalResult).length > 12
+          ? evalResult.toPrecision(10)
+          : evalResult.toString();
+
+      // Guardamos el resultado y la expresión evaluada
+      setResult(finalResult);
+      setExpression(expressionToEvaluate);
+      setHasResult(true);
+    } catch {
+      setResult('Error');
+      setHasResult(true);
+    }
+  };
+
+
+  const clearDisplay = () => {
+    setExpression('0');
+    setResult('0');
+    setHasResult(false);
+  };
+
   return (
     <>
       <div id='navBar'>
@@ -83,39 +148,43 @@ function App() {
           <p id='subtitle'>Simple on the outside, powerful on the inside.</p>
         </div>
         <div id='mesa'>
-          <div class="calculadora-display">
-            <div class="expresion">3 × (4 + 5)</div>
-            <div class="resultado">27</div>
+          <div className="calculadora-display">
+            <div className="resultado">
+              {hasResult ? result : expression || '0'}
+            </div>
+            <div className="expresion" ref={displayRef}>
+              {hasResult ? expression || '0' : result}
+            </div>
           </div>
           <div id='grid-botones'>
-            <button>C</button>
-            <button>()</button>
-            <button>%</button>
-            <button>+</button>
+            <button id='borrarDisplay' onClick={clearDisplay}>C</button>
+            <button id='parentesis'>()</button>
+            <button id='division' onClick={() => handleInput('÷')}>÷</button>
+            <button id='punto' onClick={() => handleInput('.')}>.</button>
 
-            <button class="func">sin</button>
-            <button>7</button>
-            <button>8</button>
-            <button>9</button>
+            <button id='sin' className="func" onClick={() => handleInput('sin(')}>sin</button>
+            <button id='siete' onClick={() => handleInput('7')}>7</button>
+            <button id='ocho' onClick={() => handleInput('8')}>8</button>
+            <button id='nueve' onClick={() => handleInput('9')}>9</button>
 
-            <button class="func">cos</button>
-            <button>4</button>
-            <button>5</button>
-            <button>6</button>
+            <button className="func" onClick={() => handleInput('cos(')}>cos</button>
+            <button id='cuatro' onClick={() => handleInput('4')}>4</button>
+            <button id='cinco' onClick={() => handleInput('5')}>5</button>
+            <button id='seis' onClick={() => handleInput('6')}>6</button>
 
-            <button class="func">tan</button>
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
+            <button className="func" onClick={() => handleInput('tan(')}>tan</button>
+            <button id='uno' onClick={() => handleInput('1')}>1</button>
+            <button id='dos' onClick={() => handleInput('2')}>2</button>
+            <button id='tres' onClick={() => handleInput('3')}>3</button>
 
-            <button class="func-orange">log</button>
-            <button>0</button>
-            <button>.</button>
-            <button class="igual">=</button>
+            <button id='log' className="func-orange" onClick={() => handleInput('log(')}>log</button>
+            <button id='cero' onClick={() => handleInput('0')}>0</button>
+            <button id='suma' onClick={() => handleInput('+')}>+</button>
+            <button id='igual' className="igual" onClick={calculateResult}>=</button>
 
-            <button class="func-orange">√</button>
-            <button class="func-orange">x</button>
-            <button></button>
+            <button id='raiz' className="func-orange" onClick={() => handleInput('√(')}>√</button>
+            <button id='multiplicacion' className="func-orange" onClick={() => handleInput('×')}>x</button>
+            <button id='menos' onClick={() => handleInput('-')}>-</button>
           </div>
         </div>
       </div>
