@@ -40,13 +40,13 @@ body.dark {
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: 0.3s ease;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transition: 0.3s ease;
 }
 
 body.light {
-  background-color: #f4f4f4;
+    background-color: #f4f4f4;
 }
 
 #navBar {
@@ -339,7 +339,7 @@ button:hover {
 }
 
 button:active {
-    transform: scale(0.95);
+    transform: scale(0.85);
 }
 
 .func {
