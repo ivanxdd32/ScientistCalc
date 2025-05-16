@@ -4,6 +4,7 @@ import * as Tone from "tone";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
+  const [showLangMenu, setShowLangMenu] = useState(false);
   const menuRef = useRef(null);
   const desplegadoRef = useRef(null);
 
@@ -30,6 +31,10 @@ function App() {
     }
   }, [darkMode]);
 
+  function toggleLangMenu() {
+    setShowLangMenu(prev => !prev);
+  }
+
   return (
     <>
       <div id='navBar'>
@@ -54,7 +59,20 @@ function App() {
         </div>
         <div id='menuDesplegado' ref={desplegadoRef}>
           <ol id='menuOpciones'>
-            <li>Language</li>
+            <li onClick={toggleLangMenu} className='menu-item-with-icon'>
+              <div id='lenguageIconCont' className={showLangMenu ? 'rotated' : ''}>
+                <div className='lenguageIcon'></div>
+                <div className='lenguageIcon'></div>
+              </div>
+              Language
+              {showLangMenu && (
+                <ul className='submenu'>
+                  <li>English</li>
+                  <li>Español</li>
+                  <li>Deutsch</li>
+                </ul>
+              )}
+            </li>
             <li>Scientist Mode</li>
           </ol>
         </div>
