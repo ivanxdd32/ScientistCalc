@@ -280,6 +280,7 @@ h1 {
     padding: 1rem;
     margin-bottom: 10px;
     width: 90%;
+    height: 20%;
     box-sizing: border-box;
     gap: 0.5rem;
     color: var(--color-text);
@@ -327,6 +328,25 @@ h1 {
 }
 
 .resultado::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #00ffaa, #00bfff);
+}
+
+.expresion::-webkit-scrollbar {
+  height: 6px;
+}
+
+.expresion::-webkit-scrollbar-track {
+  background: #1e1e2f;
+  border-radius: 10px;
+}
+
+.expresion::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #00bfff, #00ffaa);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.expresion::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(45deg, #00ffaa, #00bfff);
 }
 

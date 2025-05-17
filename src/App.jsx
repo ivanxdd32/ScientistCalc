@@ -158,7 +158,7 @@ function App() {
           </div>
           <div id='grid-botones'>
             <button id='borrarDisplay' onClick={clearDisplay}>C</button>
-            <button id='parentesis'>()</button>
+            <button id='parentesis' onClick={() => handleInput(')')}>)</button>
             <button id='division' onClick={() => handleInput('÷')}>÷</button>
             <button id='punto' onClick={() => handleInput('.')}>.</button>
 
