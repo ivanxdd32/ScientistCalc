@@ -5,6 +5,8 @@ import * as Tone from "tone";
 function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('English');
   const menuRef = useRef(null);
   const desplegadoRef = useRef(null);
 
@@ -14,6 +16,11 @@ function App() {
       desplegadoRef.current.classList.toggle('visible');
     }
   }
+
+  const setLanguage = (lang) => {
+    setSelectedLanguage(lang);
+    setShowLangMenu(false);
+  };
 
   function toggleTheme(){
     setDarkMode(prev => !prev);
@@ -93,7 +100,6 @@ function App() {
     }
   };
 
-
   const clearDisplay = () => {
     setExpression('0');
     setResult('0');
@@ -124,20 +130,31 @@ function App() {
         </div>
         <div id='menuDesplegado' ref={desplegadoRef}>
           <ol id='menuOpciones'>
-            <li onClick={toggleLangMenu} className='menu-item-with-icon'>
+            <li
+              className={showLangMenu ? 'active' : ''}
+              onClick={toggleLangMenu}
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+            >
               <div id='lenguageIconCont' className={showLangMenu ? 'rotated' : ''}>
-                <div className='lenguageIcon'></div>
-                <div className='lenguageIcon'></div>
               </div>
               Language
               {showLangMenu && (
-                <ul className='submenu'>
-                  <li>English</li>
-                  <li>Español</li>
-                  <li>Deutsch</li>
-                </ul>
-              )}
-            </li>
+                  <ul className='submenu'>
+                    <li onClick={() => setLanguage('English')}>English</li>
+                    <li onClick={() => setLanguage('Español')}>Español</li>
+                    <li onClick={() => setLanguage('中文')}>中文</li>
+                    <li onClick={() => setLanguage('हिंदी')}>हिंदी</li>
+                    <li onClick={() => setLanguage('العربية')}>العربية</li>
+                    <li onClick={() => setLanguage('Português')}>Português</li>
+                    <li onClick={() => setLanguage('বাংলা')}>বাংলা</li>
+                    <li onClick={() => setLanguage('Русский')}>Русский</li>
+                    <li onClick={() => setLanguage('日本語')}>日本語</li>
+                    <li onClick={() => setLanguage('Deutsch')}>Deutsch</li>
+                    <p>Selected Language: {selectedLanguage}</p>
+                  </ul>
+                )}
+              </li>
             <li>Scientist Mode</li>
           </ol>
         </div>
