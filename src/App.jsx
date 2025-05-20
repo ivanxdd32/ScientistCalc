@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import './App.css'
 import * as Tone from "tone";
+import { useTranslation } from 'react-i18next';
+
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -9,7 +11,7 @@ function App() {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
   const menuRef = useRef(null);
   const desplegadoRef = useRef(null);
-
+  
   function toggleMenu() {
     if (menuRef.current) {
       menuRef.current.classList.toggle('active');
@@ -68,7 +70,6 @@ function App() {
       let expressionToEvaluate = '';
 
       if (hasResult) {
-        // Si se escribió sobre el resultado, evaluamos lo que hay en result
         expressionToEvaluate = result;
       } else {
         // Caso normal: evaluamos la expresión
@@ -106,6 +107,15 @@ function App() {
     setHasResult(false);
   };
 
+  //Logica para el cambio de idiomas.
+
+  const { t, i18n } = useTranslation();
+  
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem('lang', lang);
+  };
+
   return (
     <>
       <div id='navBar'>
@@ -138,31 +148,31 @@ function App() {
             >
               <div id='lenguageIconCont' className={showLangMenu ? 'rotated' : ''}>
               </div>
-              Language
+              {t("language")}
               {showLangMenu && (
                   <ul className='submenu'>
-                    <li onClick={() => setLanguage('English')}>English</li>
-                    <li onClick={() => setLanguage('Español')}>Español</li>
-                    <li onClick={() => setLanguage('中文')}>中文</li>
-                    <li onClick={() => setLanguage('हिंदी')}>हिंदी</li>
-                    <li onClick={() => setLanguage('العربية')}>العربية</li>
-                    <li onClick={() => setLanguage('Português')}>Português</li>
-                    <li onClick={() => setLanguage('বাংলা')}>বাংলা</li>
-                    <li onClick={() => setLanguage('Русский')}>Русский</li>
-                    <li onClick={() => setLanguage('日本語')}>日本語</li>
-                    <li onClick={() => setLanguage('Deutsch')}>Deutsch</li>
-                    <p>Selected Language: {selectedLanguage}</p>
+                    <li onClick={() => { setLanguage('العربية'); changeLanguage('ar'); }}>العربية</li>
+                    <li onClick={() => { setLanguage('বাংলা'); changeLanguage('bn'); }}>বাংলা</li>
+                    <li onClick={() => { setLanguage('Deutsch'); changeLanguage('de'); }}>Deutsch</li>
+                    <li onClick={() => { setLanguage('English'); changeLanguage('en'); }}>English</li>
+                    <li onClick={() => { setLanguage('Español'); changeLanguage('es'); }}>Español</li>
+                    <li onClick={() => { setLanguage('हिंदी'); changeLanguage('hi'); }}>हिंदी</li>
+                    <li onClick={() => { setLanguage('日本語'); changeLanguage('ja'); }}>日本語</li>
+                    <li onClick={() => { setLanguage('Português'); changeLanguage('pt'); }}>Português</li>
+                    <li onClick={() => { setLanguage('Русский'); changeLanguage('ru'); }}>Русский</li>
+                    <li onClick={() => { setLanguage('中文'); changeLanguage('zh'); }}>中文</li>
+                    <p>{t("selected_language")} : {selectedLanguage}</p>
                   </ul>
                 )}
               </li>
-            <li>Scientist Mode</li>
+            <li>{t("scientist_mode")}</li>
           </ol>
         </div>
       </div>
       <div id='contentOrder'>
         <div>
-          <h1>Calculator</h1>
-          <p id='subtitle'>Simple on the outside, powerful on the inside.</p>
+          <h1>{t("calculator_title")}</h1>
+          <p id='subtitle'>{t("calculator_subtitle")}</p>
         </div>
         <div id='mesa'>
           <div className="calculadora-display">
