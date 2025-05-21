@@ -1,5 +1,3 @@
-import { useState, useRef, useEffect } from 'react'
-import { useTranslation } from 'react-i18next';
 import Header from './Components/Header';
 import Main from './Components/Main';
 import './App.css'
