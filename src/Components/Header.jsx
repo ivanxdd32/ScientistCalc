@@ -4,12 +4,31 @@ import { useTranslation } from 'react-i18next';
 function Header() {
     const { t, i18n } = useTranslation();
 
+    const languageNames = {
+        ar: "العربية",
+        bn: "বাংলা",
+        de: "Deutsch",
+        en: "English",
+        es: "Español",
+        hi: "हिंदी",
+        ja: "日本語",
+        pt: "Português",
+        ru: "Русский",
+        zh: "中文",
+    };
+
     const [showLangMenu, setShowLangMenu] = useState(false);
-    const [selectedLanguage, setSelectedLanguage] = useState('English');
     const [hovered, setHovered] = useState(false);
+    const [darkMode, setDarkMode] = useState(true);
     const menuRef = useRef(null);
     const desplegadoRef = useRef(null);
-    const [darkMode, setDarkMode] = useState(true);
+    const [selectedLanguage, setSelectedLanguage] = useState(() => {
+        return localStorage.getItem('lang') || 'en'; // valor inicial desde localStorage o 'English'
+    });
+
+    useEffect(() => {
+        i18n.changeLanguage(selectedLanguage); // aplicar el idioma al cargar el componente
+    }, [selectedLanguage, i18n]);
 
     function toggleTheme(){
         setDarkMode(prev => !prev);
@@ -47,6 +66,7 @@ function Header() {
     const changeLanguage = (lang) => {
         i18n.changeLanguage(lang);
         localStorage.setItem('lang', lang);
+        setSelectedLanguage(lang);
     };
 
   return (
@@ -98,7 +118,7 @@ function Header() {
                             <li onClick={() => { setLanguage('Português'); changeLanguage('pt'); }}>Português</li>
                             <li onClick={() => { setLanguage('Русский'); changeLanguage('ru'); }}>Русский</li>
                             <li onClick={() => { setLanguage('中文'); changeLanguage('zh'); }}>中文</li>
-                            <p>{t("selected_language")} : {selectedLanguage}</p>
+                            <p>{t("selected_language")} : {languageNames[selectedLanguage]}</p>
                         </ul>
                     )}
                     </li>
