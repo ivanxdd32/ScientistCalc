@@ -29,7 +29,7 @@ const ChillMusic3 = () => {
         sustain: 0.5,
         release: 6,
       },
-      volume: -15,
+      volume: -20,
     }).connect(delay);
 
     // Acordes tipo ambient lo-fi, más espaciales

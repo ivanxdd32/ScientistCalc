@@ -3,6 +3,7 @@ import * as Tone from "tone";
 import ChillMusic from './Sounds/Sound';
 import ChillMusic2 from './Sounds/Sound2';
 import ChillMusic3 from './Sounds/Sound3';
+import ChillMusic4 from './Sounds/Sound4';
 
 function Footer() {
     const [musicOn, setMusicOn] = useState(false);
@@ -41,12 +42,14 @@ function Footer() {
                     <li onClick={() => handleSelect("chill")}>🎵 Relax 1</li>
                     <li onClick={() => handleSelect("chill2")}>🎶 Relax 2</li>
                     <li onClick={() => handleSelect("chill3")}>🎼 Relax 3</li>
+                    <li onClick={() => handleSelect("chill4")}>🌧️ Rain</li>
                 </ul>
             </div>
 
             {musicOn && selectedTrack === "chill" && <ChillMusic />}
             {musicOn && selectedTrack === "chill2" && <ChillMusic2 />}
             {musicOn && selectedTrack === "chill3" && <ChillMusic3 />}
+            {musicOn && selectedTrack === "chill4" && <ChillMusic4 />}
         </footer>
     );
 }
