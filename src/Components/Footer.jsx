@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import * as Tone from "tone";
-import ChillMusic from './Sound';
-import ChillMusic2 from './Sound2';
-import ChillMusic3 from './Sound3';
+import ChillMusic from './Sounds/Sound';
+import ChillMusic2 from './Sounds/Sound2';
+import ChillMusic3 from './Sounds/Sound3';
 
 function Footer() {
     const [musicOn, setMusicOn] = useState(false);
