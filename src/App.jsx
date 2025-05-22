@@ -1,15 +1,14 @@
 import Header from './Components/Header';
 import Main from './Components/Main';
+import Footer from './Components/Footer';
 import './App.css'
-
-//not used now
-import * as Tone from "tone";
 
 function App() {
   return (
     <>
       <Header />
       <Main />
+      <Footer />
     </>
   )
 }
