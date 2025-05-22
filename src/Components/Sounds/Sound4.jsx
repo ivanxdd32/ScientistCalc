@@ -1,129 +1,102 @@
 import * as Tone from "tone";
 import { useEffect } from "react";
 
-const ChillMusic4 = () => {
+const CalmYourHeartRainSoft = () => {
   useEffect(() => {
-    // Reverb amplio para todo el ambiente
-    const reverb = new Tone.Reverb({
-      decay: 15,
-      preDelay: 0.5,
-    }).toDestination();
+    // 🎧 Ambiente general
+    const reverb = new Tone.Reverb({ decay: 12, preDelay: 0.8 }).toDestination();
+    const delay = new Tone.FeedbackDelay("8n", 0.3).connect(reverb);
 
-    // Ganancias para hacer fade in
-    const rainGain = new Tone.Gain(0).connect(reverb);
-    const windGain = new Tone.Gain(0).connect(reverb);
-    const synthGain = new Tone.Gain(0).connect(reverb);
-    const dripGain = new Tone.Gain(0).connect(reverb);
-
-    // 🌧️ Lluvia suave con white noise filtrado
-    const rainNoise = new Tone.Noise("white");
-    const rainFilter = new Tone.Filter(1000, "lowpass");
-    rainNoise.connect(rainFilter).connect(rainGain);
-
-    // 🌬️ Viento con pink noise y LFO para variación natural
-    const windNoise = new Tone.Noise("pink");
-    const windFilter = new Tone.Filter(300, "lowpass");
-    windNoise.connect(windFilter).connect(windGain);
-
-    const windLFO = new Tone.LFO({
-      frequency: 0.1,
-      min: 0.05,
-      max: 0.3,
-    }).connect(windGain.gain);
-    windLFO.start();
-
-    // Fondo armónico muy discreto
-    const synth = new Tone.PolySynth(Tone.Synth, {
+    // 🎹 Pads
+    const pad = new Tone.PolySynth(Tone.Synth, {
       oscillator: { type: "sine" },
       envelope: {
         attack: 4,
         decay: 2,
-        sustain: 0.2,
-        release: 8,
+        sustain: 0.4,
+        release: 6,
       },
-      volume: -30,
-    }).connect(synthGain);
+      volume: -16,
+    }).connect(reverb);
 
-    // Sonido de gotas ligeras (ligero goteo)
-    const dripSynth = new Tone.MembraneSynth({
-      pitchDecay: 0.05,
-      octaves: 4,
+    // 🔔 Gotas
+    const bell = new Tone.MembraneSynth({
+      pitchDecay: 0.01,
+      octaves: 2,
+      oscillator: { type: "sine" },
       envelope: {
-        attack: 0.001,
-        decay: 0.2,
+        attack: 0.01,
+        decay: 1,
         sustain: 0,
-        release: 0.2,
+        release: 1,
       },
-      volume: -24,
-    }).connect(dripGain);
+    }).connect(delay);
 
-    // Patrón rítmico para gotas (cada 1.5 segundos, con variaciones)
-    const dripPattern = new Tone.Pattern(
-      (time, note) => {
-        dripSynth.triggerAttackRelease(note, "8n", time);
-      },
-      ["C5", "E5", "G5", "B4", "A4", "F4"],
-      "random"
-    );
+    // 🌧️ Lluvia sutil con fade-in
+    const rainNoise = new Tone.Noise("white");
+    const rainFilter = new Tone.Filter(500, "lowpass"); // Más cerrado = más suave
+    const rainGain = new Tone.Gain(0).connect(reverb); // Empieza en silencio
 
+    rainNoise.connect(rainFilter).connect(rainGain);
+
+    // 🎶 Acordes lentos
     const chords = [
-      ["C3", "G3", "D4"],
-      ["A2", "E3", "B3"],
-      ["F2", "C3", "G3"],
+      ["C4", "E4", "G4"],
+      ["A3", "C4", "E4"],
+      ["F3", "A3", "C4"],
+      ["G3", "B3", "D4"],
     ];
 
-    let index = 0;
+    let chordIndex = 0;
 
-    const loop = new Tone.Loop((time) => {
-      if (!synth.disposed) {
-        synth.triggerAttackRelease(chords[index % chords.length], "1m", time);
-        index++;
+    const chordLoop = new Tone.Loop((time) => {
+      if (!pad.disposed) {
+        pad.triggerAttackRelease(chords[chordIndex % chords.length], "2m", time);
+        chordIndex++;
       }
-    }, "1m");
+    }, "4m");
+
+    // 🔹 Gotas aleatorias
+    const dripNotes = ["C6", "E5", "A5", "G5"];
+    const dripLoop = new Tone.Loop((time) => {
+      if (!bell.disposed) {
+        const note = dripNotes[Math.floor(Math.random() * dripNotes.length)];
+        bell.triggerAttackRelease(note, "8n", time);
+      }
+    }, "2.7s");
 
     const start = async () => {
       await Tone.start();
-
-      Tone.Transport.bpm.value = 35; // ultra lento, muy relajado
-
-      // Empezar el transporte y sonidos
+      Tone.Transport.bpm.value = 40;
       Tone.Transport.start();
       rainNoise.start();
-      windNoise.start();
-      loop.start(0);
-      dripPattern.start(0);
-
-      // Hacer fade in progresivo de 20 segundos para lluvia, viento y synth
-      rainGain.gain.linearRampTo(0.15, 20);  // Volumen objetivo lluvia suave
-      windGain.gain.linearRampTo(0.2, 20);   // Volumen objetivo viento
-      synthGain.gain.linearRampTo(1, 20);    // Volumen objetivo synth
-      dripGain.gain.linearRampTo(0.1, 20);   // Goteo ligero
+      // 🌧️ Fade-in lento para la lluvia
+      rainGain.gain.linearRampToValueAtTime(0.03, Tone.now() + 10); // Subida suave en 10 segundos
+      chordLoop.start(0);
+      dripLoop.start("2m");
     };
 
     start();
 
     return () => {
-      loop.stop();
-      dripPattern.stop();
+      chordLoop.stop();
+      dripLoop.stop();
       Tone.Transport.stop();
       Tone.Transport.cancel();
+      chordLoop.dispose();
+      dripLoop.dispose();
+      pad.dispose();
+      bell.dispose();
       rainNoise.stop();
-      windNoise.stop();
-      synth.dispose();
-      dripSynth.dispose();
-      reverb.dispose();
+      rainNoise.dispose();
       rainFilter.dispose();
-      windFilter.dispose();
-      windLFO.dispose();
       rainGain.dispose();
-      windGain.dispose();
-      synthGain.dispose();
-      dripGain.dispose();
+      delay.dispose();
+      reverb.dispose();
     };
   }, []);
 
   return null;
 };
 
-export default ChillMusic4;
-
+export default CalmYourHeartRainSoft;

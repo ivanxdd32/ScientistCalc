@@ -15,7 +15,7 @@ function Footer() {
     };
 
     const handleSelect = async (track) => {
-        await Tone.start(); // Necesario para que se permita reproducir
+        await Tone.start(); // Permite reproducir
         setSelectedTrack(track);
         setMusicOn(true);
         setShowDropdown(false);
@@ -42,7 +42,7 @@ function Footer() {
                     <li onClick={() => handleSelect("chill")}>🎵 Relax 1</li>
                     <li onClick={() => handleSelect("chill2")}>🎶 Relax 2</li>
                     <li onClick={() => handleSelect("chill3")}>🎼 Relax 3</li>
-                    <li onClick={() => handleSelect("chill4")}>🌧️ Rain</li>
+                    <li onClick={() => handleSelect("chill4")}>🌧️ CaveRain</li>
                 </ul>
             </div>
 
