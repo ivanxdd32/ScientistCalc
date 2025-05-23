@@ -4,6 +4,7 @@ import './Styles/App.css';
 import './Styles/Header.css';
 import './Styles/Body.css';
 import './Styles/Footer.css';
+import './Styles/ScientistMode.css';
 import App from './App.jsx';
 import './i18n';
 

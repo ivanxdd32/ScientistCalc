@@ -1,78 +1,73 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import ScientistMode from './ScientistMode';
 
-function Body() {
+function ScientistMode (){
     const { t } = useTranslation();
     const [expression, setExpression] = useState('0');
     const [result, setResult] = useState('0');
     const [hasResult, setHasResult] = useState(false);
     const displayRef = useRef(null);
     
-     //Logica de las operaciones matematicas.
-
     useEffect(() => {
-        if (displayRef.current) {
-        displayRef.current.scrollLeft = displayRef.current.scrollWidth;
-        }
-    }, [expression, result]);
-
-    const handleInput = (value) => {
-        if (hasResult) {
-        setResult((prev) => (prev === '0' ? value : prev + value));
-        } else {
-        setExpression((prev) => (prev === '0' ? value : prev + value));
-        }
-    };
-
-    const calculateResult = () => {
-        try {
-        let expressionToEvaluate = '';
-
-        if (hasResult) {
-            expressionToEvaluate = result;
-        } else {
-            // Caso normal: evaluamos la expresión
-            expressionToEvaluate = expression;
-        }
-
-        const sanitized = expressionToEvaluate
-            .replace(/×/g, '*')
-            .replace(/÷/g, '/')
-            .replace(/√/g, 'Math.sqrt')
-            .replace(/sin/g, 'Math.sin')
-            .replace(/cos/g, 'Math.cos')
-            .replace(/tan/g, 'Math.tan')
-            .replace(/log/g, 'Math.log10');
-
-        const evalResult = eval(sanitized);
-        const finalResult =
-            String(evalResult).length > 12
-            ? evalResult.toPrecision(10)
-            : evalResult.toString();
-
-        // Guardamos el resultado y la expresión evaluada
-        setResult(finalResult);
-        setExpression(expressionToEvaluate);
-        setHasResult(true);
-        } catch {
-        setResult('Error');
-        setHasResult(true);
-        }
-    };
-
-    const clearDisplay = () => {
-        setExpression('0');
-        setResult('0');
-        setHasResult(false);
-    };
+            if (displayRef.current) {
+            displayRef.current.scrollLeft = displayRef.current.scrollWidth;
+            }
+        }, [expression, result]);
+    
+        const handleInput = (value) => {
+            if (hasResult) {
+            setResult((prev) => (prev === '0' ? value : prev + value));
+            } else {
+            setExpression((prev) => (prev === '0' ? value : prev + value));
+            }
+        };
+    
+        const calculateResult = () => {
+            try {
+            let expressionToEvaluate = '';
+    
+            if (hasResult) {
+                expressionToEvaluate = result;
+            } else {
+                // Caso normal: evaluamos la expresión
+                expressionToEvaluate = expression;
+            }
+    
+            const sanitized = expressionToEvaluate
+                .replace(/×/g, '*')
+                .replace(/÷/g, '/')
+                .replace(/√/g, 'Math.sqrt')
+                .replace(/sin/g, 'Math.sin')
+                .replace(/cos/g, 'Math.cos')
+                .replace(/tan/g, 'Math.tan')
+                .replace(/log/g, 'Math.log10');
+    
+            const evalResult = eval(sanitized);
+            const finalResult =
+                String(evalResult).length > 12
+                ? evalResult.toPrecision(10)
+                : evalResult.toString();
+    
+            // Guardamos el resultado y la expresión evaluada
+            setResult(finalResult);
+            setExpression(expressionToEvaluate);
+            setHasResult(true);
+            } catch {
+            setResult('Error');
+            setHasResult(true);
+            }
+        };
+    
+        const clearDisplay = () => {
+            setExpression('0');
+            setResult('0');
+            setHasResult(false);
+        };
 
     return(
-        <main>
-            <ScientistMode />
             <div id='contentOrder'>
                 <div>
-                <h1>{t("calculator_title")}</h1>
+                <h1>{t("scientistmode_title")}</h1>
                 <p id='subtitle'>{t("calculator_subtitle")}</p>
                 </div>
                 <div id='mesa'>
@@ -116,8 +111,7 @@ function Body() {
                     </div>
                 </div>
             </div>
-        </main>
     )
 }
 
-export default Body
+export default ScientistMode

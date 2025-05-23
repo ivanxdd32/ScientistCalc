@@ -3,5 +3,6 @@
   "calculator_subtitle": "Simple on the outside, powerful on the inside.",
   "language": "Language",
   "selected_language": "Selected language",
-  "scientist_mode": "Scientist Mode"
+  "scientist_mode": "Scientist Mode",
+  "scientistmode_title": "Scientist Calculator"
 }

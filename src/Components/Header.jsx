@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import ScientistMode from './ScientistMode';
 
 function Header() {
     const { t, i18n } = useTranslation();
