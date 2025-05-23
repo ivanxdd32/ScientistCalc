@@ -32,6 +32,39 @@ const CalmYourHeartRainSoft = () => {
       },
     }).connect(delay);
 
+    // 🔔 Gotas lejanas
+    const bellFar = new Tone.MembraneSynth({
+      pitchDecay: 0.005,
+      octaves: 1.5,
+      oscillator: { type: "sine" },
+      envelope: {
+        attack: 0.01,
+        decay: 0.5,
+        sustain: 0,
+        release: 0.3,
+      },
+      volume: -10,
+    });
+
+    const panFar = new Tone.Panner(0).connect(reverb); // Pan aleatorio
+    bellFar.connect(panFar);
+
+    // 🎲 Loop de goteo lejano
+    const farDripNotes = ["C6", "D6", "E6"];
+    const farDripLoop = new Tone.Loop((time) => {
+      const groupSize = Math.floor(Math.random() * 3) + 1; // 1 a 3 gotas
+
+      for (let i = 0; i < groupSize; i++) {
+        const note = farDripNotes[Math.floor(Math.random() * farDripNotes.length)];
+        const delayTime = i * 0.2;
+
+        const panValue = Math.random() * 2 - 1; // Entre -1 (izq) y 1 (der)
+        panFar.pan.setValueAtTime(panValue, time + delayTime);
+
+        bellFar.triggerAttackRelease(note, "16n", time + delayTime);
+      }
+    }, "4s");
+
     // 🌧️ Lluvia sutil con fade-in
     const rainNoise = new Tone.Noise("white");
     const rainFilter = new Tone.Filter(500, "lowpass"); // Más cerrado = más suave
@@ -74,8 +107,12 @@ const CalmYourHeartRainSoft = () => {
       rainGain.gain.linearRampToValueAtTime(0.03, Tone.now() + 10); // Subida suave en 10 segundos
       chordLoop.start(0);
       dripLoop.start("2m");
+      farDripLoop.start("2m");
     };
 
+
+    console.log("Transport state:", Tone.Transport.state);
+    console.log("Transport position:", Tone.Transport.position);
     start();
 
     return () => {
@@ -93,6 +130,10 @@ const CalmYourHeartRainSoft = () => {
       rainGain.dispose();
       delay.dispose();
       reverb.dispose();
+      farDripLoop.stop();
+      farDripLoop.dispose();
+      bellFar.dispose();
+      panFar.dispose();
     };
   }, []);
 
