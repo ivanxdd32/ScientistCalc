@@ -1,9 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import ScientistMode from './ScientistMode';
+import VisibilidadContext from './VisibilidadContext';
 
 function Header() {
     const { t, i18n } = useTranslation();
+    const { isVisible, toggleVisibilidad } = useContext(VisibilidadContext);
 
     const languageNames = {
         ar: "العربية",
@@ -123,7 +125,9 @@ function Header() {
                         </ul>
                     )}
                     </li>
-                    <li>{t("scientist_mode")}</li>
+                    <li onClick={toggleVisibilidad}>
+                        {isVisible ? 'Ocultar' : 'Mostrar'} {t("scientist_mode")}
+                    </li>
                 </ol>
             </div>
         </div>
