@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import VisibilidadContext from './VisibilidadContext';
+import { useVisibilidad } from './VisibilidadContext';
 import Footer from "./Footer";
 
 function ScientistMode (){
@@ -8,7 +8,7 @@ function ScientistMode (){
     const [expression, setExpression] = useState('0');
     const [result, setResult] = useState('0');
     const [hasResult, setHasResult] = useState(false);
-    const { isVisible } = useContext(VisibilidadContext);
+    const { isVisible } = useVisibilidad();
     const displayRef = useRef(null);
     
     useEffect(() => {

@@ -1,5 +1,5 @@
 // VisibilidadContext.jsx
-import React, { createContext, useState } from 'react';
+import { createContext, useState, useContext } from 'react';
 
 const VisibilidadContext = createContext();
 
@@ -15,4 +15,6 @@ export function VisibilidadProvider({ children }) {
   );
 }
 
-export default VisibilidadContext;
+export function useVisibilidad() {
+  return useContext(VisibilidadContext);
+}

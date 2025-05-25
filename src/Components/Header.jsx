@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import VisibilidadContext from './VisibilidadContext';
+import { useVisibilidad } from './VisibilidadContext';
 
 function Header() {
     const { t, i18n } = useTranslation();
-    const { isVisible, toggleVisibilidad } = useContext(VisibilidadContext);
+    const { isVisible, toggleVisibilidad } = useVisibilidad();
 
     const languageNames = {
         ar: "العربية",

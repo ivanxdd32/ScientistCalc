@@ -1,21 +1,29 @@
+// App.jsx
+import { VisibilidadProvider, useVisibilidad } from './Components/VisibilidadContext';
 import Header from './Components/Header';
 import Body from './Components/Body';
-import Footer from './Components/Footer';
-import './Styles/App.css'
 import ScientistMode from './Components/ScientistMode';
-import { VisibilidadProvider } from './Components/VisibilidadContext';
+import Footer from './Components/Footer';
+import './Styles/App.css';
+
+function AppContent() {
+  const { isVisible } = useVisibilidad();
+
+  return (
+    <>
+      <Header />
+      {isVisible ? <ScientistMode /> : <Body />}
+      <Footer />
+    </>
+  );
+}
 
 function App() {
   return (
-    <>
     <VisibilidadProvider>
-      <Header />
-      <ScientistMode />
-      <Body />
-      <Footer />
+      <AppContent />
     </VisibilidadProvider>
-    </>
-  )
+  );
 }
 
-export default App
+export default App;
