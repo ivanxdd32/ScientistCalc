@@ -3,6 +3,7 @@
   "calculator_subtitle": "Einfach von außen, leistungsstark von innen.",
   "language": "Sprache",
   "selected_language": "Ausgewählte Sprache",
+  "basic_mode": "Basismodus", 
   "scientist_mode": "Wissenschaftsmodus",
   "scientistmode_title": "Wissenschaftlicher Taschenrechner"
 }

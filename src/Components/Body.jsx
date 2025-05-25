@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import ScientistMode from './ScientistMode';
 
 function Body() {
     const { t } = useTranslation();
@@ -69,7 +68,6 @@ function Body() {
 
     return(
         <main>
-            <ScientistMode />
             <div id='contentOrder'>
                 <div>
                 <h1>{t("calculator_title")}</h1>

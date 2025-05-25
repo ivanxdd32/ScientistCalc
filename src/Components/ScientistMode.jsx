@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import VisibilidadContext from './VisibilidadContext';
+import Footer from "./Footer";
 
 function ScientistMode (){
     const { t } = useTranslation();
@@ -119,12 +120,10 @@ function ScientistMode (){
                     <button id='dos' onClick={() => handleInput('2')}>2</button>
                     <button id='tres' onClick={() => handleInput('3')}>3</button>
                     <button className="func" onClick={() => handleInput('tan(')}>tan</button>
-                    
-
                 </div>
             </div>
         </div>
-    )  
+    )
 }
 
 export default ScientistMode

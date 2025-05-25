@@ -1,5 +1,5 @@
 import Header from './Components/Header';
-import Main from './Components/Body';
+import Body from './Components/Body';
 import Footer from './Components/Footer';
 import './Styles/App.css'
 import ScientistMode from './Components/ScientistMode';
@@ -11,7 +11,7 @@ function App() {
     <VisibilidadProvider>
       <Header />
       <ScientistMode />
-      <Main />
+      <Body />
       <Footer />
     </VisibilidadProvider>
     </>

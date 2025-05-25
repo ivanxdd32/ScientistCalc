@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import ScientistMode from './ScientistMode';
 import VisibilidadContext from './VisibilidadContext';
 
 function Header() {
@@ -126,7 +125,7 @@ function Header() {
                     )}
                     </li>
                     <li onClick={toggleVisibilidad}>
-                        {isVisible ? 'Ocultar' : 'Mostrar'} {t("scientist_mode")}
+                        {isVisible ? t("basic_mode") : t("scientist_mode")}
                     </li>
                 </ol>
             </div>
