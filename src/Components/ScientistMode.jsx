@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useVisibilidad } from './VisibilidadContext';
-import Footer from "./Footer";
 
 function ScientistMode (){
     const { t } = useTranslation();

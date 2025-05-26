@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import * as Tone from "tone";
 import ChillMusic from './Sounds/Sound';
 import ChillMusic2 from './Sounds/Sound2';
