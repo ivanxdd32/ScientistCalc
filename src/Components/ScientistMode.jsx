@@ -66,7 +66,7 @@ function ScientistMode (){
             setHasResult(false);
         };
 
-        if (!isVisible) return null;
+    if (!isVisible) return null;
 
     return(
         <div id='contentOrder' className='cientifica'>
