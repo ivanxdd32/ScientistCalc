@@ -70,7 +70,7 @@ function ScientistMode (){
 
     return(
         <div id='contentOrder' className='cientifica'>
-            <div>
+            <div id='contenedor_titulo'>
                 <h1>{t("scientistmode_title")}</h1>
                 <p id='subtitle'>{t("calculator_subtitle")}</p>
             </div>
