@@ -45,7 +45,6 @@ function AppContent() {
             exit={{ y: 300, opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Footer />
           </motion.div>
         </>
       ) : (
@@ -77,11 +76,11 @@ function AppContent() {
             exit={{ y: 300, opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Footer />
           </motion.div>
         </>
       )}
     </AnimatePresence>
+    <Footer />
     </>
   );
 }
