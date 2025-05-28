@@ -44,6 +44,27 @@ body.dark {
   --color-shadow: rgb(0, 0, 0);
 }
 
+/* Scrollbar para navegadores basados en WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1b1b2f; /* track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4e4e8c; /* color scroll */
+  border-radius: 10px;
+  border: 2px solid #1b1b2f; /* interior */
+}
+
+/* Para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4e4e8c #1b1b2f;
+}
+
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
@@ -58,6 +79,8 @@ main {
   width: 100%;
   height: 555px;
 }
+
+/*Diseño Responsive*/
 
 @media (max-width: 980px) {
   /*Main*/
