@@ -5,7 +5,6 @@ import Header from './Components/Header';
 import Body from './Components/Body';
 import ScientistMode from './Components/ScientistMode';
 import Footer from './Components/Footer';
-import './Styles/App.css';
 
 function AppContent() {
   const { isVisible } = useVisibilidad();
