@@ -19,6 +19,19 @@ function Header() {
         zh: "中文",
     };
 
+    const languageFlags = {
+        ar: '/flags/ar.png',
+        bn: '/flags/bn.png',
+        de: '/flags/de.png',
+        en: '/flags/en.png',
+        es: '/flags/es.png',
+        hi: '/flags/hi.png',
+        ja: '/flags/ja.png',
+        pt: '/flags/pt.png',
+        ru: '/flags/ru.png',
+        zh: '/flags/zh.png',
+    };
+
     const [showLangMenu, setShowLangMenu] = useState(false);
     const [hovered, setHovered] = useState(false);
     const [darkMode, setDarkMode] = useState(true);
@@ -110,17 +123,17 @@ function Header() {
                     {t("language")}
                     {showLangMenu && (
                         <ul className="submenu">
-                            <li onClick={() => { setLanguage('العربية'); changeLanguage('ar'); }}>العربية</li>
-                            <li onClick={() => { setLanguage('বাংলা'); changeLanguage('bn'); }}>বাংলা</li>
-                            <li onClick={() => { setLanguage('Deutsch'); changeLanguage('de'); }}>Deutsch</li>
-                            <li onClick={() => { setLanguage('English'); changeLanguage('en'); }}>English</li>
-                            <li onClick={() => { setLanguage('Español'); changeLanguage('es'); }}>Español</li>
-                            <li onClick={() => { setLanguage('हिंदी'); changeLanguage('hi'); }}>हिंदी</li>
-                            <li onClick={() => { setLanguage('日本語'); changeLanguage('ja'); }}>日本語</li>
-                            <li onClick={() => { setLanguage('Português'); changeLanguage('pt'); }}>Português</li>
-                            <li onClick={() => { setLanguage('Русский'); changeLanguage('ru'); }}>Русский</li>
-                            <li onClick={() => { setLanguage('中文'); changeLanguage('zh'); }}>中文</li>
-                            <p>{t("selected_language")} : {languageNames[selectedLanguage]}</p>
+                        {Object.entries(languageNames).map(([code, name]) => (
+                            <li key={code} onClick={() => { setLanguage(name); changeLanguage(code); }}>
+                            <img
+                                src={`/flags/${code}.png`}
+                                alt={`${name} flag`}
+                                style={{ width: '20px', height: '15px', marginRight: '8px', verticalAlign: 'middle' }}
+                            />
+                            {name}
+                            </li>
+                        ))}
+                        <p>{t("selected_language")} : {languageNames[selectedLanguage]}</p>
                         </ul>
                     )}
                     </li>
