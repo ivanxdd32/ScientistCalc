@@ -1,77 +1,76 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useVisibilidad } from './VisibilidadContext';
-import { main } from 'framer-motion/client';
 
-function ScientistMode (){
+function ScientistMode () {
     const { t } = useTranslation();
     const [expression, setExpression] = useState('0');
     const [result, setResult] = useState('0');
     const [hasResult, setHasResult] = useState(false);
+    const [message, setMessage] = useState('');
     const { isVisible } = useVisibilidad();
     const displayRef = useRef(null);
-    
+
     useEffect(() => {
-            if (displayRef.current) {
+        if (displayRef.current) {
             displayRef.current.scrollLeft = displayRef.current.scrollWidth;
-            }
-        }, [expression, result]);
-    
-        const handleInput = (value) => {
-            if (hasResult) {
+        }
+    }, [expression, result]);
+
+    const handleInput = (value) => {
+        setMessage('');
+        if (hasResult) {
             setResult((prev) => (prev === '0' ? value : prev + value));
-            } else {
+        } else {
             setExpression((prev) => (prev === '0' ? value : prev + value));
-            }
-        };
-    
-        const calculateResult = () => {
-            try {
-            let expressionToEvaluate = '';
-    
-            if (hasResult) {
-                expressionToEvaluate = result;
-            } else {
-                // Caso normal: evaluamos la expresión
-                expressionToEvaluate = expression;
-            }
-    
+        }
+    };
+
+    const calculateResult = () => {
+        try {
+            let expressionToEvaluate = hasResult ? result : expression;
+            
             const sanitized = expressionToEvaluate
-                .replace(/x/g, '*')
+                .replace(/×/g, '*')
                 .replace(/÷/g, '/')
                 .replace(/√/g, 'Math.sqrt')
                 .replace(/sin/g, 'Math.sin')
                 .replace(/cos/g, 'Math.cos')
                 .replace(/tan/g, 'Math.tan')
-                .replace(/log/g, 'Math.log10');
-    
+                .replace(/log/g, 'Math.log10')
+                .replace(/pi/g, 'Math.Pi');
+
             const evalResult = eval(sanitized);
-            const finalResult =
-                String(evalResult).length > 12
+            const finalResult = String(evalResult).length > 12
                 ? evalResult.toPrecision(10)
                 : evalResult.toString();
-    
-            // Guardamos el resultado y la expresión evaluada
+
             setResult(finalResult);
             setExpression(expressionToEvaluate);
             setHasResult(true);
-            } catch {
+            setMessage(''); // Limpiar mensaje si fue exitoso
+        } catch {
             setResult('Error');
             setHasResult(true);
-            }
-        };
-    
-        const clearDisplay = () => {
-            setExpression('0');
-            setResult('0');
-            setHasResult(false);
-        };
+            setMessage(t("error_message") || 'Expresión inválida');
+        }
+    };
 
+    const clearDisplay = () => {
+        setExpression('0');
+        setResult('0');
+        setHasResult(false);
+        setMessage('');
+    };
+    
     if (!isVisible) return null;
 
-    return(
-        <main>
-            <div id='contentOrder' className='cientifica'>
+    const displayValue = hasResult ? result : expression || '0';
+    const secondaryDisplay = hasResult ? expression || '0' : result;
+
+    return (
+        <main className='cientifica'>
+            <div id='contentOrder'>
                 <div id='contenedor_titulo'>
                     <h1>{t("scientistmode_title")}</h1>
                     <p id='subtitle'>{t("calculator_subtitle")}</p>
@@ -79,10 +78,15 @@ function ScientistMode (){
                 <div id='mesa'>
                     <div className="calculadora-display">
                         <div className="resultado">
-                        {hasResult ? result : expression || '0'}
+                            {displayValue}
                         </div>
-                        <div className="expresion" ref={displayRef}>
-                        {hasResult ? expression || '0' : result}
+                        <div className="expresion-contenedor">
+                            <div className="expresion" ref={displayRef}>
+                                {secondaryDisplay}
+                            </div>
+                            <div className="mensaje-error">
+                                {message}
+                            </div>
                         </div>
                     </div>
                     <div id='grid-botones'>
@@ -100,7 +104,7 @@ function ScientistMode (){
                         
                         <button id='punto' className='func-orange' onClick={() => handleInput('.')}>.</button>
                         <button id='division' className='func-orange' onClick={() => handleInput('÷')}>÷</button>
-                        <button id='multiplicacion' className='func-orange' onClick={() => handleInput('x')}>x</button>
+                        <button id='multiplicacion' className='func-orange' onClick={() => handleInput('×')}>×</button>
                         <button className="func-scientist" onClick={() => handleInput('e')}>e</button>
                         <button className="func" onClick={() => handleInput('atan(')}>atan</button>
                         
@@ -121,6 +125,12 @@ function ScientistMode (){
                         <button id='dos' onClick={() => handleInput('2')}>2</button>
                         <button id='tres' onClick={() => handleInput('3')}>3</button>
                         <button className="func" onClick={() => handleInput('tan(')}>tan</button>
+
+                        <button className="func" onClick={() => handleInput('tan(')}>tan</button>
+                        <button className="suma" onClick={() => handleInput('+')}>+</button>
+                        <button id='cero' onClick={() => handleInput('0')}>0</button>
+                        <button className="resta" onClick={() => handleInput('-')}>-</button>
+                        <button id='igual' className='igual' onClick={(calculateResult)}>=</button>
                     </div>
                 </div>
             </div>

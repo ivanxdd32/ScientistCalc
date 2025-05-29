@@ -114,9 +114,9 @@ function Body() {
                         <button id='igual' className="igual" onClick={calculateResult}>=</button>
                         
                         {/*Bloque 6*/}
-                        <button id='suma' onClick={() => handleInput('+')}>+</button>
+                        <button className='suma' onClick={() => handleInput('+')}>+</button>
                         <button id='cero' onClick={() => handleInput('0')}>0</button>
-                        <button id='menos' onClick={() => handleInput('-')}>-</button>
+                        <button className='resta' onClick={() => handleInput('-')}>-</button>
                     </div>
                 </div>
             </div>

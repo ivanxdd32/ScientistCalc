@@ -89,6 +89,10 @@ main {
     height: 724px;
   }
 
+  .cientifica {
+    height: 782px;
+  }
+
   #contentOrder {
     flex-direction: column;
     margin: 50px 0 0 0;

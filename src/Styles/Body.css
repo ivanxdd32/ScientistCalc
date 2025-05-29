@@ -45,9 +45,13 @@ h1 {
 
 .expresion {
   color: #cbd5e1;
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-align: left;
   overflow-x: auto;
+  white-space: nowrap;
+  flex-grow: 1;
+  font-family: monospace;
+  border-radius: 5px;
 }
 
 .resultado {
@@ -169,14 +173,14 @@ button:active {
   background-color: var(--color-orange-border);
 }
 
-#suma,
-#menos {
+.suma,
+.resta {
     background-color: #6e8e2d;
     border: 2px solid #4a6610;
 }
 
-#suma:hover,
-#menos:hover {
+.suma:hover,
+.resta:hover {
   background-color: #4a6610;
   border: 2px solid #4a6610;
 }

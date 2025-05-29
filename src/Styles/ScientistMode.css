@@ -2,7 +2,7 @@
 
 .cientifica #mesa {
     height: auto;
-    min-height: 30rem;
+    min-height: 33rem;
     width: 100%;
     max-width: 19rem;
     display: flex;
@@ -57,6 +57,14 @@
   font-family: 'Manrope', sans-serif;
 }
 
+.cientifica .expresion-contenedor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  gap: 10px;
+}
+
 .cientifica .resultado {
   font-size: 1.5rem;
   text-align: right;
@@ -65,4 +73,11 @@
 .cientifica .expresion {
   font-size: 1.1rem;
   color: #cbd5e1;
+}
+
+.mensaje-error {
+  color: red;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  min-width: 120px;
 }
