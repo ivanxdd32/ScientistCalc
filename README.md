@@ -85,6 +85,15 @@ http://localhost:5173
 
 ---
 
+## 🔄 Actualizaciones recientes
+
+- Añadido selector de música con Tone.js para reproducir 4 sonidos de relajación.
+- Implementada validación y manejo básico de errores en el input de la calculadora.
+- Mejoras en el diseño y usabilidad de la calculadora científica.
+- Incorporación de selección de idioma con banderas para mejor experiencia multilenguaje.
+
+---
+
 ## 🔗 Enlaces
 
 - 📂 [Repositorio en GitHub](https://github.com/ivanxdd32/ScientistCalc.git)
