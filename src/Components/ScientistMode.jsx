@@ -18,7 +18,80 @@ function ScientistMode () {
     }, [expression, result]);
 
     const handleInput = (value) => {
-        setMessage('');
+        const operators = ['+', '-', '×', '÷'];
+        const functions = ['sin(', 'cos(', 'tan(', 'log(', '√('];
+        const funcionesMatematicas = ['√(', 'sin(', 'cos(', 'tan(', 'log('];
+        const lastChar = hasResult ? result.slice(-1) : expression.slice(-1);
+        const target = hasResult ? result : expression;
+
+        const fullInput = hasResult ? result : expression;
+
+        // Evitar múltiples operadores seguidos
+        if (operators.includes(lastChar) && operators.includes(value)) return;
+
+        // No empezar con operador (excepto '-' para negativos)
+        if ((expression === '0' || expression === '') && operators.includes(value) && value !== '-') return;
+
+        // Prevenir múltiples puntos en el mismo número
+        if (value === '.') {
+            const parts = target.split(/[\+\-\×\÷]/);
+            const lastPart = parts[parts.length - 1];
+            if (lastPart.includes('.')) return;
+        }
+
+        // Prevenir cerrar paréntesis sin apertura previa
+        if (value === ')') {
+            const open = (target.match(/\(/g) || []).length;
+            const close = (target.match(/\)/g) || []).length;
+            if (close >= open) return;
+            if (lastChar === '(' || operators.includes(lastChar)) return; // No dejar cerrar inmediatamente
+        }
+
+        // Prevenir apertura de paréntesis después de un número sin operador
+        if (value === '(' && /\d$/.test(target)) return;
+
+        // Prevenir cierre de paréntesis justo después de un operador
+        if (value === ')' && operators.includes(lastChar)) return;
+
+        // No permitir múltiples paréntesis de apertura seguidos (como 8+((( o ((( )
+        if (value === '(' && lastChar === '(') {
+            const beforeLast = target.slice(-2, -1);
+            if (beforeLast === '(') return;
+        }
+
+        // Validar funciones como sin(, cos(, etc.
+        if (functions.includes(value)) {
+            const last = target.slice(-1);
+
+            // Permitir si es la primera entrada o reemplazo del 0 inicial
+            if (target === '0' || target === '') {
+                setExpression(value);
+                setHasResult(false);
+                return;
+            }
+
+            // Permitir función después de operador o paréntesis de apertura
+            if (/[+\-×÷(]$/.test(target)) {
+                if (hasResult) {
+                    setExpression(value);
+                    setHasResult(false);
+                } else {
+                    setExpression((prev) => prev + value);
+                }
+                return;
+            }
+
+            // Bloquear si hay número antes (como 3sin())
+            if (/\d$/.test(target)) return;
+
+            // Bloquear dos funciones seguidas (como sin(cos())
+            if (functions.some(func => target.endsWith(func))) return;
+        }
+
+        // No permitir escribir paréntesis vacío: func() o ()
+        if (value === ')' && target.slice(-1) === '(') return;
+
+        // Lógica original intacta
         if (hasResult) {
             setResult((prev) => (prev === '0' ? value : prev + value));
         } else {
@@ -26,35 +99,86 @@ function ScientistMode () {
         }
     };
 
+    const areParenthesesBalanced = (expr) => {
+        let balance = 0;
+        for (let char of expr) {
+            if (char === '(') balance++;
+            if (char === ')') balance--;
+            if (balance < 0) return false;
+        }
+        return balance === 0;
+    };
+
+    const factorial = (n) => {
+        if (n < 0) return NaN;
+        if (n === 0 || n === 1) return 1;
+        let res = 1;
+        for (let i = 2; i <= n; i++) {
+            res *= i;
+        }
+        return res;
+    };
+
     const calculateResult = () => {
         try {
             let expressionToEvaluate = hasResult ? result : expression;
-            
-            const sanitized = expressionToEvaluate
+
+            if (!areParenthesesBalanced(expressionToEvaluate)) {
+                setResult('Error: unbalanced ()');
+                setHasResult(true);
+            return;
+            }
+
+            if (/[\+\-\×\÷]{2,}/.test(expressionToEvaluate)) {
+                setResult('Error: invalid operators');
+                setHasResult(true);
+            return;
+            }
+
+            let sanitized = expressionToEvaluate
                 .replace(/×/g, '*')
                 .replace(/÷/g, '/')
-                .replace(/√/g, 'Math.sqrt')
-                .replace(/sin/g, 'Math.sin')
-                .replace(/cos/g, 'Math.cos')
-                .replace(/tan/g, 'Math.tan')
-                .replace(/log/g, 'Math.log10')
-                .replace(/pi/g, 'Math.Pi');
+                .replace(/√\(/g, 'Math.sqrt(')
+                .replace(/sin\(/g, 'Math.sin(')
+                .replace(/cos\(/g, 'Math.cos(')
+                .replace(/tan\(/g, 'Math.tan(')
+                .replace(/asin\(/g, 'Math.asin(')
+                .replace(/acos\(/g, 'Math.acos(')
+                .replace(/atan\(/g, 'Math.atan(')
+                .replace(/log\(/g, 'Math.log10(')
+                .replace(/abs\(/g, 'Math.abs(')
+                .replace(/ln\(/g, 'Math.log(')
+                .replace(/exp\(/g, 'Math.exp(')
+                .replace(/\^/g, '**')
+                .replace(/(\d+)!/g, 'factorial($1)')
+                .replace(/\bpi\b/g, 'Math.PI')
+                .replace(/\be\b/g, 'Math.E');
 
-            const evalResult = eval(sanitized);
-            const finalResult = String(evalResult).length > 12
-                ? evalResult.toPrecision(10)
-                : evalResult.toString();
+            sanitized = sanitized.replace(/(\d+(\.\d+)?)%/g, '($1/100)');
+
+            const evalResult = Function('factorial', 'return ' + sanitized)(factorial);
+
+            if (!isFinite(evalResult)) {
+                setResult('Math error');
+            } else {
+                const finalResult =
+                    String(evalResult).length > 12
+                    ? evalResult.toPrecision(10)
+                    : evalResult.toString();
 
             setResult(finalResult);
+            }
+
             setExpression(expressionToEvaluate);
             setHasResult(true);
-            setMessage(''); // Limpiar mensaje si fue exitoso
-        } catch {
+            setMessage('');
+        } catch (error) {
             setResult('Error');
             setHasResult(true);
-            setMessage(t("error_message") || 'Expresión inválida');
+            setMessage(error.message);
         }
     };
+
 
     const clearDisplay = () => {
         setExpression('0');
