@@ -17,46 +17,143 @@ function Body() {
     }, [expression, result]);
 
     const handleInput = (value) => {
-        if (hasResult) {
-        setResult((prev) => (prev === '0' ? value : prev + value));
-        } else {
-        setExpression((prev) => (prev === '0' ? value : prev + value));
+        const operators = ['+', '-', '×', '÷'];
+        const functions = ['sin(', 'cos(', 'tan(', 'log(', '√('];
+        const funcionesMatematicas = ['√(', 'sin(', 'cos(', 'tan(', 'log('];
+        const lastChar = hasResult ? result.slice(-1) : expression.slice(-1);
+        const target = hasResult ? result : expression;
+
+        const fullInput = hasResult ? result : expression;
+
+        // Evitar múltiples operadores seguidos
+        if (operators.includes(lastChar) && operators.includes(value)) return;
+
+        // No empezar con operador (excepto '-' para negativos)
+        if ((expression === '0' || expression === '') && operators.includes(value) && value !== '-') return;
+
+        // Prevenir múltiples puntos en el mismo número
+        if (value === '.') {
+            const parts = target.split(/[\+\-\×\÷]/);
+            const lastPart = parts[parts.length - 1];
+            if (lastPart.includes('.')) return;
         }
+
+        // Prevenir cerrar paréntesis sin apertura previa
+        if (value === ')') {
+            const open = (target.match(/\(/g) || []).length;
+            const close = (target.match(/\)/g) || []).length;
+            if (close >= open) return;
+            if (lastChar === '(' || operators.includes(lastChar)) return; // No dejar cerrar inmediatamente
+        }
+
+        // Prevenir apertura de paréntesis después de un número sin operador
+        if (value === '(' && /\d$/.test(target)) return;
+
+        // Prevenir cierre de paréntesis justo después de un operador
+        if (value === ')' && operators.includes(lastChar)) return;
+
+        // No permitir múltiples paréntesis de apertura seguidos (como 8+((( o ((( )
+        if (value === '(' && lastChar === '(') {
+            const beforeLast = target.slice(-2, -1);
+            if (beforeLast === '(') return;
+        }
+
+        // Validar funciones como sin(, cos(, etc.
+        if (functions.includes(value)) {
+            const last = target.slice(-1);
+
+            // Permitir si es la primera entrada o reemplazo del 0 inicial
+            if (target === '0' || target === '') {
+                setExpression(value);
+                setHasResult(false);
+                return;
+            }
+
+            // Permitir función después de operador o paréntesis de apertura
+            if (/[+\-×÷(]$/.test(target)) {
+                if (hasResult) {
+                    setExpression(value);
+                    setHasResult(false);
+                } else {
+                    setExpression((prev) => prev + value);
+                }
+                return;
+            }
+
+            // Bloquear si hay número antes (como 3sin())
+            if (/\d$/.test(target)) return;
+
+            // Bloquear dos funciones seguidas (como sin(cos())
+            if (functions.some(func => target.endsWith(func))) return;
+        }
+
+        // No permitir escribir paréntesis vacío: func() o ()
+        if (value === ')' && target.slice(-1) === '(') return;
+
+        // Lógica original intacta
+        if (hasResult) {
+            setResult((prev) => (prev === '0' ? value : prev + value));
+        } else {
+            setExpression((prev) => (prev === '0' ? value : prev + value));
+        }
+    };
+
+    const areParenthesesBalanced = (expr) => {
+        let balance = 0;
+        for (let char of expr) {
+            if (char === '(') balance++;
+            if (char === ')') balance--;
+            if (balance < 0) return false;
+        }
+        return balance === 0;
     };
 
     const calculateResult = () => {
         try {
-        let expressionToEvaluate = '';
+            let expressionToEvaluate = hasResult ? result : expression;
 
-        if (hasResult) {
-            expressionToEvaluate = result;
-        } else {
-            // Caso normal: evaluamos la expresión
-            expressionToEvaluate = expression;
-        }
+            // Validaciones básicas
+            if (!areParenthesesBalanced(expressionToEvaluate)) {
+                setResult('Error: ()');
+                setHasResult(true);
+                return;
+            }
 
-        const sanitized = expressionToEvaluate
-            .replace(/×/g, '*')
-            .replace(/÷/g, '/')
-            .replace(/√/g, 'Math.sqrt')
-            .replace(/sin/g, 'Math.sin')
-            .replace(/cos/g, 'Math.cos')
-            .replace(/tan/g, 'Math.tan')
-            .replace(/log/g, 'Math.log10');
+            if (/[\+\-\×\÷]{2,}/.test(expressionToEvaluate)) {
+                setResult('Error: ops');
+                setHasResult(true);
+                return;
+            }
 
-        const evalResult = eval(sanitized);
-        const finalResult =
-            String(evalResult).length > 12
-            ? evalResult.toPrecision(10)
-            : evalResult.toString();
+            // Reemplazos
+            const sanitized = expressionToEvaluate
+                .replace(/×/g, '*')
+                .replace(/÷/g, '/')
+                .replace(/√\(/g, 'Math.sqrt(')
+                .replace(/sin\(/g, 'Math.sin(')
+                .replace(/cos\(/g, 'Math.cos(')
+                .replace(/tan\(/g, 'Math.tan(')
+                .replace(/log\(/g, 'Math.log10(');
 
-        // Guardamos el resultado y la expresión evaluada
-        setResult(finalResult);
-        setExpression(expressionToEvaluate);
-        setHasResult(true);
-        } catch {
-        setResult('Error');
-        setHasResult(true);
+            const evalResult = eval(sanitized);
+
+            if (!isFinite(evalResult)) {
+                setResult('Math error');
+            } else {
+                const finalResult =
+                    String(evalResult).length > 12
+                        ? evalResult.toPrecision(10)
+                        : evalResult.toString();
+
+                setResult(finalResult);
+            }
+
+            setExpression(expressionToEvaluate);
+            setHasResult(true);
+
+        } catch (error) {
+            setResult('Error');
+            setHasResult(true);
         }
     };
 
