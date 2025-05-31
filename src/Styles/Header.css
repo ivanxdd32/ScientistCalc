@@ -160,7 +160,7 @@
 .submenu {
   width: 80%;
   list-style: none;
-  padding: 6px 18px;
+  padding: 6px 21px 6px 18px;
   background-color: var(--color-navbar);
   border-radius: 6px;
   margin-top: 8px;
